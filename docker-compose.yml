@@ -1,0 +1,12 @@
+version: '3'
+services:
+  discord:
+    build:
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "8889:8889"
+    environment:
+      - DISCORD_BOT_TOKEN=${DISCORD_BOT_TOKEN}
+      - DICTIONARY_API_KEY=${DICTIONARY_API_KEY}
+      - CATS_API_KEY=${CATS_API_KEY}
