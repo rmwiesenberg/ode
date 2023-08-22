@@ -20,22 +20,24 @@ type (
 	Cats []Cat
 )
 
-func queryCat() (Cat, error) {
+const CatBaseURL = "https://api.thecatapi.com/v1/images/search?api_key=%s"
+
+func queryCat() (*Cat, error) {
 	var cats Cats
 
-	baseURL := "https://api.thecatapi.com/v1/images/search?api_key=%s"
-	res, err := http.Get(fmt.Sprintf(baseURL, os.Getenv("CATS_API_KEY")))
+	query := fmt.Sprintf(CatBaseURL, os.Getenv("CATS_API_KEY"))
+	res, err := http.Get(query)
 	if err != nil {
-		return cats[0], err
+		return nil, err
 	}
 	defer res.Body.Close()
 
 	if res.StatusCode == http.StatusOK {
 		err := json.NewDecoder(res.Body).Decode(&cats)
-		return cats[0], err
+		return &cats[0], err
 	}
 	err = errors.New("Recieved: " + res.Status)
-	return cats[0], err
+	return nil, err
 }
 
 // catsHandler accepts the cat request from discord
