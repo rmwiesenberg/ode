@@ -1,0 +1,13 @@
+[Unit]
+Description=Ode: your friendly neighborhood discord bot
+After=network.target
+
+[Service]
+User=ode
+WorkingDirectory=/home/ode/go/src/github.com/rmwiesenberg/ode
+ExecStart=/bin/bash run.sh
+Restart=on-success
+RestartSec=5s
+
+[Install]
+WantedBy=multi-user.target
