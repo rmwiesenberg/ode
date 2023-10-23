@@ -2,6 +2,7 @@ version: '3'
 services:
   discord:
     build:
+      context: .
       dockerfile: Dockerfile
     restart: always
     ports:
