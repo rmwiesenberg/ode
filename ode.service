@@ -4,7 +4,7 @@ After=network.target
 
 [Service]
 User=ode
-WorkingDirectory=/home/ode/go/src/github.com/rmwiesenberg/ode
+WorkingDirectory=/home/ode/ode
 ExecStart=/bin/bash run.sh
 Restart=on-success
 RestartSec=5s
