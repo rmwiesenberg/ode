@@ -6,7 +6,7 @@ After=network.target
 User=ode
 WorkingDirectory=/home/ode/ode
 ExecStart=/bin/bash run.sh
-Restart=on-success
+Restart=on-failure
 RestartSec=5s
 
 [Install]

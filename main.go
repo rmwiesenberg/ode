@@ -14,7 +14,7 @@ import (
 
 // Bot parameters
 var (
-	BotID   = flag.String("id", "", "BotID")
+	BotID   = flag.String("id", "1140718447018377417", "BotID")
 	GuildID = flag.String("guild", "", "Test guild ID. If not passed - bot registers tools globally")
 )
 
@@ -34,12 +34,6 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-
-	user, err := session.User("@me")
-	if err != nil {
-		panic(err)
-	}
-	BotID = &user.ID
 
 	session.AddHandler(messageHandler)
 	session.AddHandler(func(session *discordgo.Session, i *discordgo.InteractionCreate) {

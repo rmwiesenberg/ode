@@ -5,7 +5,7 @@ Ode can do a lot of things!
 - Animal pictures (dogs and cats)
 - and more! 
 
-[Add to Server](https://discord.com/oauth2/authorize?client_id=1140718447018377417&scope=bot&permissions=40138682993408)
+Add to Server: [ode.rwies.com](https://ode.rwies.com)
 
 ## Long-term deployment
 1. install docker, add run user to the docker group, restart
