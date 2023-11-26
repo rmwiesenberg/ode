@@ -1,6 +1,8 @@
 #! /bin/bash
 git checkout main
 git pull
+
+docker-compose down
 docker-compose pull
 
 if [ -f .env ]; then
