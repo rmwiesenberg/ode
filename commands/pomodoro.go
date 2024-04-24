@@ -47,13 +47,12 @@ func pomodoroStartHandler(session *discordgo.Session, i *discordgo.InteractionCr
 	onWorkEnd = func() {
 		pomodoro.workCounter++
 		if pomodoro.workCounter >= pomodoro.Rounds {
+			sendRandomAnimal(session, pomodoro.channel)
 			session.ChannelMessageSend(pomodoro.channel, "✨ Pomodoro Finished ✨")
 			_clearPomodoro(&pomodoro)
 			return
 		} else {
-			if cat, _ := queryCat(); cat != nil {
-				session.ChannelMessageSend(pomodoro.channel, cat.URL)
-			}
+			sendRandomAnimal(session, pomodoro.channel)
 			session.ChannelMessageSend(pomodoro.channel, "Break Time!")
 		}
 		pomodoro.currentTimer = time.AfterFunc(time.Duration(pomodoro.TimeBreakM)*time.Minute, onBreakEnd)

@@ -20,6 +20,10 @@ var (
 			Description: "Get yo-self a dog",
 		},
 		{
+			Name:        "animal",
+			Description: "Get yo-self a animal",
+		},
+		{
 			Name:        "scatter",
 			Description: "Fly! You fools!",
 		},
@@ -73,6 +77,7 @@ var (
 	CommandHandlers = map[string]func(session *discordgo.Session, i *discordgo.InteractionCreate){
 		"cat":       catsHandler,
 		"dog":       dogsHandler,
+		"animal":    animalsHandler,
 		"scatter":   scatterHandler,
 		"moms-home": momsHandler,
 		"pomodoro": func(s *discordgo.Session, i *discordgo.InteractionCreate) {

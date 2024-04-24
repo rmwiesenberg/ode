@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"math/rand"
 	"net/http"
 	"os"
 
@@ -22,7 +23,7 @@ type (
 
 const CatBaseURL = "https://api.thecatapi.com/v1/images/search?api_key=%s"
 
-func queryCat() (*Cat, error) {
+func queryCat() (*string, error) {
 	var cats Cats
 
 	query := fmt.Sprintf(CatBaseURL, os.Getenv("CATS_API_KEY"))
@@ -34,7 +35,7 @@ func queryCat() (*Cat, error) {
 
 	if res.StatusCode == http.StatusOK {
 		err := json.NewDecoder(res.Body).Decode(&cats)
-		return &cats[0], err
+		return &cats[0].URL, err
 	}
 	err = errors.New("Recieved: " + res.Status)
 	return nil, err
@@ -50,7 +51,7 @@ func catsHandler(session *discordgo.Session, i *discordgo.InteractionCreate) {
 	session.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
 		Type: discordgo.InteractionResponseChannelMessageWithSource,
 		Data: &discordgo.InteractionResponseData{
-			Content: cat.URL,
+			Content: *cat,
 		},
 	})
 }
@@ -65,25 +66,25 @@ type (
 	Dogs []Dog
 )
 
-func queryDog() (Dog, error) {
+func queryDog() (*string, error) {
 	var dog Dog
 
 	baseURL := "https://dog.ceo/api/breeds/image/random"
 	res, err := http.Get(baseURL)
 	if err != nil {
-		return dog, err
+		return nil, err
 	}
 	defer res.Body.Close()
 
 	if res.StatusCode == http.StatusOK {
 		err := json.NewDecoder(res.Body).Decode(&dog)
-		return dog, err
+		return &dog.Message, err
 	}
 	err = errors.New("Recieved: " + res.Status)
-	return dog, err
+	return nil, err
 }
 
-// dogssHandler accepts the dog request from discord
+// dogsHandler accepts the dog request from discord
 func dogsHandler(session *discordgo.Session, i *discordgo.InteractionCreate) {
 	dog, err := queryDog()
 	if err != nil {
@@ -93,7 +94,40 @@ func dogsHandler(session *discordgo.Session, i *discordgo.InteractionCreate) {
 	session.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
 		Type: discordgo.InteractionResponseChannelMessageWithSource,
 		Data: &discordgo.InteractionResponseData{
-			Content: dog.Message,
+			Content: *dog,
 		},
 	})
+}
+
+func randomAnimal() (*string, error) {
+	switch rand.Intn(2) {
+	case 0:
+		return queryCat()
+	case 1:
+		return queryDog()
+	default:
+		return nil, errors.New("Random out of range")
+	}
+}
+
+func animalsHandler(session *discordgo.Session, i *discordgo.InteractionCreate) {
+	animal, err := randomAnimal()
+	if err != nil {
+		panic(err)
+	}
+
+	session.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
+		Type: discordgo.InteractionResponseChannelMessageWithSource,
+		Data: &discordgo.InteractionResponseData{
+			Content: *animal,
+		},
+	})
+}
+
+func sendRandomAnimal(session *discordgo.Session, channelID string) error {
+	animal, err := randomAnimal()
+	if animal != nil {
+		session.ChannelMessageSend(channelID, *animal)
+	}
+	return err
 }
