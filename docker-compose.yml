@@ -1,12 +1,8 @@
 version: '3'
 services:
   discord:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: "rmwiesenberg/ode:latest"
     restart: always
-    ports:
-      - "8889:8889"
     environment:
       - DISCORD_BOT_TOKEN=${DISCORD_BOT_TOKEN}
       - DICTIONARY_API_KEY=${DICTIONARY_API_KEY}

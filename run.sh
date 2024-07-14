@@ -1,11 +1,11 @@
 #! /bin/bash
-git checkout main
 git pull
-
-docker-compose down
-docker-compose pull
 
 if [ -f .env ]; then
   export $(grep -v '^#' .env | xargs)
 fi
-docker-compose up --build
+
+docker-compose stop
+docker-compose rm -f
+docker-compose pull
+docker-compose up
