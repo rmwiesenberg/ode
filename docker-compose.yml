@@ -1,9 +1,7 @@
 version: '3'
 services:
   discord:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: "rmwiesenberg/ode:latest"
     restart: always
     ports:
       - "8889:8889"
